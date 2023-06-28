@@ -23,7 +23,7 @@ class TaskDetailActivity : AppCompatActivity() {
     companion object{
         private const val TASK_DETAIL_EXTRA = "task.extra.detail"
 
-        fun start(context: Context, task: Task?): Intent{
+        fun start(context: Context, task: Task?): Intent {
             val intent = Intent(context, TaskDetailActivity::class.java)
                 .apply {
                     putExtra(TASK_DETAIL_EXTRA, task)
@@ -44,7 +44,7 @@ class TaskDetailActivity : AppCompatActivity() {
         val edtDescription = findViewById<EditText>(R.id.edt_task_description)
          btnDone = findViewById<Button>(R.id.btn_done)
 
-        if (task != null){
+        if (task != null) {
             edtTitle.setText(task!!.title)
             edtDescription.setText(task!!.description)
         }
@@ -67,7 +67,7 @@ class TaskDetailActivity : AppCompatActivity() {
 
         }
         //Recuperar campo do XML
-       // tvTitle = findViewById(R.id.tv_task_title_detail)
+        //tvTitle = findViewById(R.id.tv_task_title_detail)
 
         //Setar um novo texto na tela
         //tvTitle.text = task?.title ?: "Adicione uma tarefa"

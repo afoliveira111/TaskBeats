@@ -13,15 +13,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import java.io.Serializable
 import androidx.activity.result.ActivityResult
+import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import androidx.room.Room
 import com.comunidadedevspace.taskbeats.R
-import com.comunidadedevspace.taskbeats.data.AppDataBase
 import com.comunidadedevspace.taskbeats.data.Task
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,43 +30,26 @@ class MainActivity : AppCompatActivity() {
         TaskListAdapter(::onListItemClicked)
     }
 
-    private val dataBase  by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            AppDataBase::class.java, "taskbeats-database"
-        ).build()
-    }
 
-    private val dao by lazy {
-        dataBase.tasDao()
+    private val viewModel: TaskListViewModel by lazy {
+        TaskListViewModel.create(application)
     }
 
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
-            //pegando resultado
             val data = result.data
             val taskAction = data?.getSerializableExtra(TASK_ACTION_RESULT) as TaskAction
-            val task: Task = taskAction.task
 
-            when (taskAction.actionType) {
-                ActionType.DELETE.name -> deleteById(task.id)
-                ActionType.CREATE.name -> insertIntoDataBase(task)
-                ActionType.UPDATE.name -> updateIntoDataBase(task)
-
-
-            }
+            viewModel.execute(taskAction)
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        listFromDataBase()
         ctnContent = findViewById(R.id.ctn_content)
 
 
@@ -88,47 +68,34 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // Create
-    // Read
-    // Update
-    // Delete
+      override fun onStart() {
+          super.onStart()
+          listFromDataBase()
 
-    private fun insertIntoDataBase(task: Task){
-        CoroutineScope(IO).launch {
-            dao.insert(task)
-            listFromDataBase()
-        }
-
-    }
-
-    private fun updateIntoDataBase(task: Task) {
-        CoroutineScope(IO).launch {
-            dao.update(task)
-            listFromDataBase()
-        }
     }
 
     private fun deleteAll(){
-        CoroutineScope(IO).launch {
-            dao.deleteAll()
-            listFromDataBase()
-        }
+        val taskAction = TaskAction(null, ActionType.DELETE_ALL.name)
+        viewModel.execute(taskAction)
     }
 
-    private fun deleteById(id: Int){
-        CoroutineScope(IO).launch {
-            dao.deleteById(id)
-            listFromDataBase()
-        }
-    }
-
-    private fun listFromDataBase(){
-        CoroutineScope(IO).launch {
-            val myDataBaseList: List<Task> = dao.getAll()
-            adapter.submitList(myDataBaseList)
 
 
-        }
+    private fun listFromDataBase() {
+            //Observer
+            val listObserver = Observer<List<Task>> { listTasks ->
+                if (listTasks.isEmpty()){
+                    ctnContent.visibility = View.VISIBLE
+                } else {
+                    ctnContent.visibility = View.GONE
+                }
+                adapter.submitList(listTasks)
+            }
+
+            //Live Data
+            viewModel.taskListLiveData.observe(this, listObserver)
+
+
 
     }
 
@@ -171,12 +138,13 @@ class MainActivity : AppCompatActivity() {
 // CRUD
 enum class ActionType {
     DELETE,
+    DELETE_ALL,
     UPDATE,
     CREATE
 }
 
 data class TaskAction(
-    val task: Task,
+    val task: Task?,
     val actionType: String
 ) : Serializable
 
