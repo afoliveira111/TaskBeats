@@ -21,7 +21,7 @@ import com.comunidadedevspace.taskbeats.data.Task
 
 
 
-class MainActivity : AppCompatActivity() {
+class TaskListActivity : AppCompatActivity() {
 
 
     private lateinit var ctnContent: LinearLayout
