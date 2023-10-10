@@ -16,7 +16,6 @@ class TaskListAdapter(
 ) : ListAdapter<Task, TaskListViewHolder>(TaskListAdapter) {
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListViewHolder {
         val view: View = LayoutInflater
             .from(parent.context)
@@ -40,8 +39,8 @@ class TaskListAdapter(
                     oldItem.description == newItem.description
         }
     }
+}
 
- }
 
 
 
