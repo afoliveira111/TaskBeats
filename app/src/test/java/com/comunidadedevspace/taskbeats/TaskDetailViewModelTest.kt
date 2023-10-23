@@ -1,12 +1,12 @@
 package com.comunidadedevspace.taskbeats
-import com.comunidadedevspace.taskbeats.data.Task
-import com.comunidadedevspace.taskbeats.data.TaskDao
+import com.comunidadedevspace.taskbeats.data.local.Task
+import com.comunidadedevspace.taskbeats.data.local.TaskDao
 import com.comunidadedevspace.taskbeats.presentation.ActionType
 import com.comunidadedevspace.taskbeats.presentation.TaskAction
 import com.comunidadedevspace.taskbeats.presentation.TaskDetailViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -14,13 +14,14 @@ import org.mockito.kotlin.verify
 @OptIn(ExperimentalCoroutinesApi::class)
 class TaskDetailViewModelTest {
 
-    private val taskDao: TaskDao = mock()
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
+    private val taskDao: TaskDao = mock()
 
     private val underTest: TaskDetailViewModel by lazy {
         TaskDetailViewModel(
             taskDao,
-            UnconfinedTestDispatcher()
         )
     }
 
