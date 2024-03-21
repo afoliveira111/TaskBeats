@@ -1,5 +1,12 @@
 # Android TaskBeats
 
+## :camera_flash: Screenshots
+<table>
+  <tr>
+    <td><img src="/result/IMG_1.png" width="260"></td><td><img src="/result/IMG_2.png" width="260"></td><td><img<td><img src="/result/IMG_3.png" width="260"></td><td><img src="/result/IMG_4.png" width="260"></td>
+  </tr>
+</table>
+
 Este README fornece uma visão geral do projeto Android TaskBeats, incluindo as principais tecnologias e bibliotecas utilizadas.
 
 ## Tecnologias
