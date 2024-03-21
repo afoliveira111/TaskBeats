@@ -13,11 +13,15 @@ Este README fornece uma visão geral do projeto Android TaskBeats, incluindo as 
 
 ## Tecnologias
 - Android: O projeto é desenvolvido na plataforma Android, usando a linguagem Kotlin para programação.
-- Retrofit: O Retrofit é uma biblioteca utilizada para fazer solicitações HTTP à API de notícias.
-- ViewModel: A arquitetura ViewModel é empregada para gerenciar a obtenção de dados da API de notícias.
-- RecyclerView: O RecyclerView é usado para exibir listas de notícias e tarefas de forma eficiente.
-- LiveData: O LiveData é empregado para atualizar a interface do usuário com dados em tempo real.
-- Room: O Room é utilizado para a persistência de dados locais, permitindo o armazenamento e recuperação de tarefas do aplicativo.
+- Retrofit
+- ViewModel
+- RecyclerView
+- LiveData
+- Room
+
+## Testes Unitários
+- **Mockito-Kotlin: Para simular dependências nos testes.**
+- **JUnit: Para estruturar e executar testes unitários.**
 
 ## Bibliotecas
 ### Retrofit
