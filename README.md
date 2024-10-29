@@ -1,4 +1,4 @@
-# Aplicativo TaskBeats
+# TaskBeats
 
 Aplicativo para criar lista de tarefas com um link de noticias do mundo.
 
